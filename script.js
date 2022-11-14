@@ -172,7 +172,7 @@ const animateVRM = (vrm, results) => {
 
   // Animate Face
   if (faceLandmarks) {
-   riggedFace = Kalidokit.Face.solve(faceLandmarks,{
+   riggedFace = Kalidokit.Face.solve(faceLandmarks, {
       runtime:"mediapipe",
       video:videoElement
    });
@@ -213,7 +213,10 @@ const animateVRM = (vrm, results) => {
 
   // Animate Hands
   if (leftHandLandmarks) {
-    riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left");
+    riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left", {
+      runtime:"mediapipe",
+      video:videoElement
+   });
     rigRotation("LeftHand", {
       // Combine pose rotation Z and hand rotation X Y
       z: riggedPose.LeftHand.z,
@@ -266,6 +269,7 @@ const animateVRM = (vrm, results) => {
 let videoElement = document.querySelector(".input_video"),
     guideCanvas = document.querySelector('canvas.guides');
 
+
 const onResults = (results) => {
   // Draw landmark guides
   drawResults(results)
@@ -282,13 +286,16 @@ const holistic = new Holistic({
   holistic.setOptions({
     modelComplexity: 1,
     smoothLandmarks: true,
+    enableSegmentation: false,
+    smoothSegmentation: false,
+    refineFaceLandmarks: true,
     minDetectionConfidence: 0.7,
     minTrackingConfidence: 0.7,
-    refineFaceLandmarks: true,
   });
   // Pass holistic a callback function
   holistic.onResults(onResults);
 
+console.log(videoElement.videoWidth, videoElement.videoHeight)
 const drawResults = (results) => {
   guideCanvas.width = videoElement.videoWidth;
   guideCanvas.height = videoElement.videoHeight;
@@ -296,14 +303,15 @@ const drawResults = (results) => {
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, guideCanvas.width, guideCanvas.height);
   // Use `Mediapipe` drawing functions
-  drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
-      color: "#00cff7",
-      lineWidth: 4
-    });
-    drawLandmarks(canvasCtx, results.poseLandmarks, {
-      color: "#ff0364",
-      lineWidth: 2
-    });
+  // drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
+  //     color: "#00cff7",
+  //     lineWidth: 4
+  //   });
+    // drawLandmarks(canvasCtx, results.poseLandmarks, {
+    //   color: "#ff0364",
+    //   lineWidth: 2
+    // });
+    
     drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
       color: "#C0C0C070",
       lineWidth: 1
