@@ -52,9 +52,11 @@ video {
 }
 body {
     margin: 0;
+    text-align:center;
 }
 canvas {
-    display: block;
+    display: inline;
+    text-align: center;
 }
 .guides {
     position: absolute;
