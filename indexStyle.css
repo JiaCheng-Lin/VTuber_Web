@@ -1,0 +1,13 @@
+#input_1{text-align:center}
+
+#unity_content{text-align:center}
+
+
+#out_vid
+{
+    display: block;
+    margin: 0 auto;
+}
+
+canvas, input{display:inline-block}
+

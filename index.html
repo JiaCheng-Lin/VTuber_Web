@@ -1,36 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
   <head>
-    <meta charset="utf-8" />
-    <!-- HTML Meta Tags -->
-    <title>KalidoKit - Face and Body Rig Solver</title>
-    <meta
-      name="description"
-      content="Track face and body rigs just your browser webcam!"
-    />
-
-    <!-- Twitter Meta Tags -->
-    <!-- <meta name="twitter:card" content="summary_large_image" /> -->
-    <!-- <meta property="twitter:domain" content="kit.kalidoface.com" /> -->
-    <!-- <meta property="twitter:url" content="https://kit.kalidoface.com/" /> -->
-    <!-- <meta name="twitter:title" content="KalidoKit - Face and Body Rig Solver" /> -->
-    <!-- <meta
-      name="twitter:description"
-      content="Track face and body rigs just your browser webcam!"
-    />
-    <meta
-      name="twitter:image"
-      content="https://cdn.glitch.com/239c5934-4d83-4c5c-bef6-44dcdb04c8fb%2Fkalidoface-meta.jpg?v=1630110302224"
-    />
-    <meta
-      name="viewport"
-      content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-    />
-    <link
-      rel="shortcut icon"
-      href="https://yeemachine.github.io/kalidoface-live2d-models/Icons/icon-circle.svg"
-    /> -->
-
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | VTuber_Cubism</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="demo.css" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="indexStyle.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.1/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.1/face_mesh.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
+    
+    <!--Kalidokit_3d -->
     <!--     Basic Three.js -->
     <script src="https://unpkg.com/three@0.133.0/build/three.js"></script>
     <!--     GLTF Loader for Three.js -->
@@ -44,7 +33,6 @@
       src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/holistic.js"
       crossorigin="anonymous"
     ></script>
-
     <!--     Mediapipe Drawing Tools -->
     <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
@@ -57,43 +45,209 @@
     ></script>
     <!--     Kalidokit Kinematic Solver -->
     <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./Kalidokit_3d/style.css" />  
+    
+    <!--Kalidokit_3d -->
+
   </head>
   <body>
-    <div class="preview">
-      <video class="input_video" width="640px" height="480px"  autoplay muted playsinline></video>
-      <canvas class="guides" width="1280px" height="720px"></canvas>
-      <!-- <section>
-        <a href="https://kalidokit-live2d.glitch.me"><p>Live2D</p></a>
-        <a class="current" href="https://glitch.com/edit/#!/kalidokit"
-          ><p>VRM</p></a
-        >
-      </section> -->
-    </div>
-    <!-- <h1 class="notranslate">
-      <a href="https://3d.kalidoface.com">kalidoface</a>
-    </h1>
-    <nav>
-      <a href="https://www.npmjs.com/package/kalidokit">
-        <img
-          src="https://cdn.glitch.me/447b6603-7eae-4da6-957d-73ee30c8e731%2Fnpm.png?v=1635133318451"
-        />
-      </a>
-      <a href="https://github.com/yeemachine/kalidokit">
-        <img
-          src="https://cdn.glitch.me/447b6603-7eae-4da6-957d-73ee30c8e731%2Fgithub.png?v=1635133310517"
-        />
-      </a>
-      <a href="https://twitter.com/yeemachine">
-        <img
-          src="https://cdn.glitch.me/447b6603-7eae-4da6-957d-73ee30c8e731%2Ftwitter.png?v=1635133322561"
-        />
-      </a>
-    </nav> -->
-    <!-- <p class="linkOut">
-      Visit
-      <a id="full" href="https://kalidoface.com">the full Vtuber App</a>!
-    </p> -->
-    <script src="script.js"></script>
+        <div id="sitebody" >
+            <div id="input_1">
+                <!-- <input id="a" type="range" min="0" max="1" step="0.1"></t>
+                <input id="b" type="range" min="0" max="1" step="0.1">
+                <script>
+                    const arr = new Float32Array(2);
+                    arr[0] = parseFloat(document.getElementById('a').value)
+                    arr[1] = parseFloat(document.getElementById('a').value)
+                    //window.alert(typeof ())
+                    let number_a = 1.0
+                    // window.setInterval(function() {
+                    //     gameInstance.SendMessage('JSHook', 'SetString',  parseFloat(document.getElementById('a').value));
+                    // }, 30);
+                </script> -->
+
+                <!-- document.getElementById('a').value -->
+                <!-- <button onclick="gameInstance.SendMessage('JSHook', 'SetString',  parseFloat(number_a))">Add</button> -->
+                <!-- SendMessage(objectName, methodName, value); -->
+                <br><br>
+            </div>
+
+            <div id="unity_content" class="center" >
+                <!-- <div id="unity-container" class="unity-desktop"> -->
+                <canvas id="unity-canvas" width=960 height=600></canvas>
+                <div id="unity-loading-bar">
+                    <div id="unity-logo"></div>
+                    <div id="unity-progress-bar-empty">
+                        <div id="unity-progress-bar-full"></div>
+                    </div>
+                <!-- </div> -->
+            </div>
+            <!-- <div id="unity-warning"> </div> -->
+            <div id="unity-footer">
+                <!-- <div id="unity-webgl-logo"></div> -->
+                <div id="unity-fullscreen-button" class="center"></div>
+                <!-- <div id="unity-build-title">VTuber_Cubism</div> -->
+            </div>
+          
+        
+            
+            <div class="preview">
+                <video class="input_video" width="640px" height="480px"  autoplay muted playsinline></video>
+                <canvas class="guides" width="1280px" height="720px"></canvas>
+                <!-- <section>
+                  <a href="https://kalidokit-live2d.glitch.me"><p>Live2D</p></a>
+                  <a class="current" href="https://glitch.com/edit/#!/kalidokit"
+                    ><p>VRM</p></a
+                  >
+                </section> -->
+              </div>
+        </div>
+
+        
+        <!-- <script type="text/javascript" src="./js/faceMesh.js"></script> -->
+
+
+      <script>
+          var container = document.querySelector("#unity-container");
+          var canvas = document.querySelector("#unity-canvas");
+          var loadingBar = document.querySelector("#unity-loading-bar");
+          var progressBarFull = document.querySelector("#unity-progress-bar-full");
+          var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+          var warningBanner = document.querySelector("#unity-warning");
+
+          // Shows a temporary message banner/ribbon for a few seconds, or
+          // a permanent error message on top of the canvas if type=='error'.
+          // If type=='warning', a yellow highlight color is used.
+          // Modify or remove this function to customize the visually presented
+          // way that non-critical warnings and error messages are presented to the
+          // user.
+          function unityShowBanner(msg, type) {
+              function updateBannerVisibility() {
+                  warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+              }
+              var div = document.createElement('div');
+              div.innerHTML = msg;
+              warningBanner.appendChild(div);
+              if (type == 'error') div.style = 'background: red; padding: 10px;';
+              else {
+                  if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+                  setTimeout(function () {
+                      warningBanner.removeChild(div);
+                      updateBannerVisibility();
+                  }, 5000);
+              }
+              updateBannerVisibility();
+          }
+
+          var buildUrl = "Build";
+          var loaderUrl = buildUrl + "/WebGL.loader.js";
+          var config = {
+              dataUrl: buildUrl + "/WebGL.data.unityweb",
+              frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
+              codeUrl: buildUrl + "/WebGL.wasm.unityweb",
+              streamingAssetsUrl: "StreamingAssets",
+              companyName: "DefaultCompany",
+              productName: "VTuber_Cubism",
+              productVersion: "0.1",
+              showBanner: unityShowBanner,
+          };
+
+          // By default Unity keeps WebGL canvas render target size matched with
+          // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+          // Set this to false if you want to decouple this synchronization from
+          // happening inside the engine, and you would instead like to size up
+          // the canvas DOM size and WebGL render target sizes yourself.
+          // config.matchWebGLToCanvasSize = false;
+
+          if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+              // Mobile device style: fill the whole browser client area with the game canvas:
+
+              var meta = document.createElement('meta');
+              meta.name = 'viewport';
+              meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+              document.getElementsByTagName('head')[0].appendChild(meta);
+              container.className = "unity-mobile";
+              canvas.className = "unity-mobile";
+
+              // To lower canvas resolution on mobile devices to gain some
+              // performance, uncomment the following line:
+              // config.devicePixelRatio = 1;
+
+              unityShowBanner('WebGL builds are not supported on mobile devices.');
+          } else {
+              // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+
+              canvas.style.width = "960px";
+              canvas.style.height = "600px";
+          }
+
+          loadingBar.style.display = "block";
+
+          var gameInstance = null;
+          var script = document.createElement("script");
+          script.src = loaderUrl;
+          script.onload = () => {
+              createUnityInstance(canvas, config, (progress) => {
+                  progressBarFull.style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
+                  gameInstance = unityInstance;
+                  loadingBar.style.display = "none";
+                  fullscreenButton.onclick = () => {
+                      unityInstance.SetFullscreen(1);
+                  };
+              }).catch((message) => {
+                  alert(message);
+              });
+          };
+          document.body.appendChild(script);
+      </script>
+
+
+      <!-- <div style="border:solid 1px black; width:200px; height:30px; margin:auto; text-align:center" onclick="gameInstance.SendMessage('JSHook', 'SetString', '123')"> Set String </div> -->
+      <script src="./Kalidokit_3d/script.js"></script> <!--Kalidokit_3d -->
+      <script>
+        window.setInterval(function() {
+            var myData = getData();
+            console.log("getdata: ", myData);
+            gameInstance.SendMessage('JSHook', 'SetString',  parseFloat(myData));
+        }, 15);
+      </script>
   </body>
 </html>
+
+
+<!-- <div id="mediapipe_content"> -->
+    <!-- CONTENTS -->
+    <!-- <div class="container"> -->
+        <!-- WEBCAM INPUT -->
+        <!-- <div class="row" > -->
+            <!-- <article class="panel is-info"> -->
+                <!-- <p class="panel-heading">
+                    Webcam Input
+                </p> -->
+                <!-- <div class="panel-block"> -->
+                    <!-- <video hidden class="input_video2" style="-webkit-transform:scaleX(-1); transform:scaleX(-1);"></video> -->
+                <!-- </div> -->
+            <!-- </article> -->
+        <!-- </div> -->
+        
+        <!-- MEDIAPIPE OUTPUT -->
+        <!-- <div class="column"> -->
+            <!-- <article id="panel" class="panel is-info"> -->
+                <!-- <p class="panel-heading">
+                    Mediapipe Face Mesh
+                </p> -->
+                <!-- <div class="panel-block"> -->
+                    <!-- <canvas id="out_vid" class="output2" width="240px" height="240px"></canvas> -->
+                <!-- </div> -->
+            <!-- </article> -->
+        <!-- </div> -->
+
+        <!-- <div class="loading">
+            <div class="spinner"></div>
+            </div>
+                <div style="visibility: hidden;" class="control2"></div>
+            </div>
+        </div>
+    </div>
+</div> -->
