@@ -96,7 +96,7 @@ const rigRotation = (
   );
   let quaternion = new THREE.Quaternion().setFromEuler(euler);
   Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
-//   console.log(euler)
+
 };
 
 // Animate Position Helper Function
@@ -123,7 +123,8 @@ let oldLookTarget = new THREE.Euler()
 const rigFace = (riggedFace) => {
     if(!currentVrm){return}
     rigRotation("Neck", riggedFace.head, 0.7);
-    console.log(riggedFace.head.degrees)
+    console.log("riggedFace", riggedFace.head.degrees)
+
     roll = riggedFace.head.degrees.z
     yaw = riggedFace.head.degrees.y
     pitch = riggedFace.head.degrees.x
@@ -281,12 +282,14 @@ function getData() {
   {id:1,name:'Alpha'},
   {id:2,name:'Beta'}
   */
-  return roll;
+  var data = [roll, pitch, yaw];
+  // console.log("roll, pitch, yaw: ",data);
+  return data;
 }
 
 /* SETUP MEDIAPIPE HOLISTIC INSTANCE */
 let videoElement = document.querySelector(".input_video"),
-    guideCanvas = document.querySelector('canvas.guides');
+  guideCanvas = document.querySelector('canvas.guides');
 
 
 const onResults = (results) => {
@@ -296,14 +299,17 @@ const onResults = (results) => {
   animateVRM(currentVrm, results);
 }
 
+// create mediapipe holistic instance
 const holistic = new Holistic({
     locateFile: file => {
       return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
     }
   });
 
+  // set facemesh config
+  // https://google.github.io/mediapipe/solutions/holistic.html#model_complexity
   holistic.setOptions({
-    modelComplexity: 1,
+    modelComplexity: 1, // 0, 1, 2, 
     smoothLandmarks: true,
     enableSegmentation: false,
     smoothSegmentation: false,
@@ -335,6 +341,16 @@ const drawResults = (results) => {
       color: "#C0C0C070",
       lineWidth: 1
     });
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_RIGHT_EYE, {color: '#FF3030'});
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_RIGHT_EYEBROW, {color: '#FF3030'});
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_RIGHT_IRIS, {color: '#FF3030'});
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_LEFT_EYE, {color: '#30FF30'});
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_LEFT_EYEBROW, {color: '#30FF30'});
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_LEFT_IRIS, {color: '#30FF30'});
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_FACE_OVAL, {color: '#E0E0E0'});
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_LIPS, {color: '#E0E0E0'});
+    
+    
     if(results.faceLandmarks && results.faceLandmarks.length === 478){
       //draw pupils
       drawLandmarks(canvasCtx, [results.faceLandmarks[468],results.faceLandmarks[468+5]], {

@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.css" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="demo.css" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="demo.css" crossorigin="anonymous"> -->
     
     <link rel="stylesheet" href="indexStyle.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.1/drawing_utils.js" crossorigin="anonymous"></script>
@@ -47,207 +46,153 @@
     <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
     <link rel="stylesheet" href="./Kalidokit_3d/style.css" />  
     
-    <!--Kalidokit_3d -->
+    <!-- PixiJS -->
+    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
+
 
   </head>
   <body>
-        <div id="sitebody">
-            <div id="input_1">
-                <!-- <input id="a" type="range" min="0" max="1" step="0.1"></t>
-                <input id="b" type="range" min="0" max="1" step="0.1">
-                <script>
-                    const arr = new Float32Array(2);
-                    arr[0] = parseFloat(document.getElementById('a').value)
-                    arr[1] = parseFloat(document.getElementById('a').value)
-                    //window.alert(typeof ())
-                    let number_a = 1.0
-                    // window.setInterval(function() {
-                    //     gameInstance.SendMessage('JSHook', 'SetString',  parseFloat(document.getElementById('a').value));
-                    // }, 30);
-                </script> -->
-
-                <!-- document.getElementById('a').value -->
-                <!-- <button onclick="gameInstance.SendMessage('JSHook', 'SetString',  parseFloat(number_a))">Add</button> -->
-                <!-- SendMessage(objectName, methodName, value); -->
-                <br><br>
-            </div>
-
-            <div id="unity_content"  >
-                <!-- <div id="unity-container" class="unity-desktop"> -->
-                <canvas id="unity-canvas" width=960 height=600></canvas>
-                <div id="unity-loading-bar">
-                    <div id="unity-logo"></div>
-                    <div id="unity-progress-bar-empty">
-                        <div id="unity-progress-bar-full" style="display: inline; text-align: center;"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div id="unity-warning"> </div> -->
-            <div id="unity-footer">
-                <!-- <div id="unity-webgl-logo"></div> -->
-                <div id="unity-fullscreen-button" class="center"></div>
-                <!-- <div id="unity-build-title">VTuber_Cubism</div> -->
-            </div>
-          
-        
-            
-            <div class="preview">
-                <video class="input_video" width="640px" height="480px"  autoplay muted playsinline></video>
-                <canvas class="guides" width="1280px" height="720px"></canvas>
-                <!-- <section>
-                  <a href="https://kalidokit-live2d.glitch.me"><p>Live2D</p></a>
-                  <a class="current" href="https://glitch.com/edit/#!/kalidokit"
-                    ><p>VRM</p></a
-                  >
-                </section> -->
-              </div>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=960 height=600></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
         </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-webgl-logo"></div>
+        <div id="unity-fullscreen-button"></div>
+        <!-- <div id="unity-build-title">VTuber_Cubism</div> -->
+      </div>
+    </div>
 
-        
-        <!-- <script type="text/javascript" src="./js/faceMesh.js"></script> -->
+    <!--Kalidokit_3d -->
+    <div class="preview">
+      <video class="input_video" width="640px" height="480px"  autoplay muted playsinline></video>
+      <canvas class="guides" width="1280px" height="720px"></canvas>
+      <!-- <section>
+        <a href="https://kalidokit-live2d.glitch.me"><p>Live2D</p></a>
+        <a class="current" href="https://glitch.com/edit/#!/kalidokit"
+          ><p>VRM</p></a
+        >
+      </section> -->
+    </div>
+  <!--Kalidokit_3d -->
+    <script>
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var warningBanner = document.querySelector("#unity-warning");
 
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
 
-      <script>
-          var container = document.querySelector("#unity-container");
-          var canvas = document.querySelector("#unity-canvas");
-          var loadingBar = document.querySelector("#unity-loading-bar");
-          var progressBarFull = document.querySelector("#unity-progress-bar-full");
-          var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-          var warningBanner = document.querySelector("#unity-warning");
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/WebGL_original.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/WebGL_original.data.unityweb",
+        frameworkUrl: buildUrl + "/WebGL_original.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebGL_original.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "VTuber_Cubism",
+        productVersion: "0.1",
+        showBanner: unityShowBanner,
+      };
 
-          // Shows a temporary message banner/ribbon for a few seconds, or
-          // a permanent error message on top of the canvas if type=='error'.
-          // If type=='warning', a yellow highlight color is used.
-          // Modify or remove this function to customize the visually presented
-          // way that non-critical warnings and error messages are presented to the
-          // user.
-          function unityShowBanner(msg, type) {
-              function updateBannerVisibility() {
-                  warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-              }
-              var div = document.createElement('div');
-              div.innerHTML = msg;
-              warningBanner.appendChild(div);
-              if (type == 'error') div.style = 'background: red; padding: 10px;';
-              else {
-                  if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-                  setTimeout(function () {
-                      warningBanner.removeChild(div);
-                      updateBannerVisibility();
-                  }, 5000);
-              }
-              updateBannerVisibility();
-          }
+      // By default Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
 
-          var buildUrl = "Build";
-          var loaderUrl = buildUrl + "/WebGL.loader.js";
-          var config = {
-              dataUrl: buildUrl + "/WebGL.data.unityweb",
-              frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
-              codeUrl: buildUrl + "/WebGL.wasm.unityweb",
-              streamingAssetsUrl: "StreamingAssets",
-              companyName: "DefaultCompany",
-              productName: "VTuber_Cubism",
-              productVersion: "0.1",
-              showBanner: unityShowBanner,
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        container.className = "unity-mobile";
+        canvas.className = "unity-mobile";
+
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
+
+        unityShowBanner('WebGL builds are not supported on mobile devices.');
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
+      }
+
+      loadingBar.style.display = "block";
+
+      var gameInstance = null;
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          gameInstance = unityInstance;
+          loadingBar.style.display = "none";
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
           };
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+    <script src="./Kalidokit_3d/script.js"></script> <!--Kalidokit_3d -->
+    <script>
+      window.setInterval(function() {
+          var data = getData();
+          var roll = 0, pitch = 0, yaw = 0;
+          roll=(data[0]*-1).toString();//.toString();
+          pitch=data[1].toString();
+          yaw=(data[2]*-1).toString();
 
-          // By default Unity keeps WebGL canvas render target size matched with
-          // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-          // Set this to false if you want to decouple this synchronization from
-          // happening inside the engine, and you would instead like to size up
-          // the canvas DOM size and WebGL render target sizes yourself.
-          // config.matchWebGLToCanvasSize = false;
-
-          if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-              // Mobile device style: fill the whole browser client area with the game canvas:
-
-              var meta = document.createElement('meta');
-              meta.name = 'viewport';
-              meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-              document.getElementsByTagName('head')[0].appendChild(meta);
-              container.className = "unity-mobile";
-              canvas.className = "unity-mobile";
-
-              // To lower canvas resolution on mobile devices to gain some
-              // performance, uncomment the following line:
-              // config.devicePixelRatio = 1;
-
-              unityShowBanner('WebGL builds are not supported on mobile devices.');
-          } else {
-              // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
-              canvas.style.width = "960px";
-              canvas.style.height = "600px";
+          console.log("roll, pitch, yaw: ", roll, pitch, yaw);
+          var indata = roll+"~"+pitch+"~"+yaw
+          // console.log(typeof indata); // string 
+          // gameInstance.SendMessage('JSHook', 'SetString',  float_data);
+          if (roll!=0&&pitch!=0&&yaw!=0 ){ // 
+            gameInstance.SendMessage('JSHook', 'GetJsData',  indata);
+            // (send data)ref: https://www.feedingedge.co.uk/blog/2011/03/09/browser-to-unity3d-communication-and-back-again/
           }
-
-          loadingBar.style.display = "block";
-
-          var gameInstance = null;
-          var script = document.createElement("script");
-          script.src = loaderUrl;
-          script.onload = () => {
-              createUnityInstance(canvas, config, (progress) => {
-                  progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                  gameInstance = unityInstance;
-                  loadingBar.style.display = "none";
-                  fullscreenButton.onclick = () => {
-                      unityInstance.SetFullscreen(1);
-                  };
-              }).catch((message) => {
-                  alert(message);
-              });
-          };
-          document.body.appendChild(script);
-      </script>
-
-
-      <!-- <div style="border:solid 1px black; width:200px; height:30px; margin:auto; text-align:center" onclick="gameInstance.SendMessage('JSHook', 'SetString', '123')"> Set String </div> -->
-      <script src="./Kalidokit_3d/script.js"></script> <!--Kalidokit_3d -->
-      <script>
-        window.setInterval(function() {
-            var myData = getData();
-            console.log("getdata: ", myData);
-            gameInstance.SendMessage('JSHook', 'SetString',  parseFloat(myData));
-        }, 15);
-      </script>
+      }, 15);
+    </script>
   </body>
 </html>
-
-
-<!-- <div id="mediapipe_content"> -->
-    <!-- CONTENTS -->
-    <!-- <div class="container"> -->
-        <!-- WEBCAM INPUT -->
-        <!-- <div class="row" > -->
-            <!-- <article class="panel is-info"> -->
-                <!-- <p class="panel-heading">
-                    Webcam Input
-                </p> -->
-                <!-- <div class="panel-block"> -->
-                    <!-- <video hidden class="input_video2" style="-webkit-transform:scaleX(-1); transform:scaleX(-1);"></video> -->
-                <!-- </div> -->
-            <!-- </article> -->
-        <!-- </div> -->
-        
-        <!-- MEDIAPIPE OUTPUT -->
-        <!-- <div class="column"> -->
-            <!-- <article id="panel" class="panel is-info"> -->
-                <!-- <p class="panel-heading">
-                    Mediapipe Face Mesh
-                </p> -->
-                <!-- <div class="panel-block"> -->
-                    <!-- <canvas id="out_vid" class="output2" width="240px" height="240px"></canvas> -->
-                <!-- </div> -->
-            <!-- </article> -->
-        <!-- </div> -->
-
-        <!-- <div class="loading">
-            <div class="spinner"></div>
-            </div>
-                <div style="visibility: hidden;" class="control2"></div>
-            </div>
-        </div>
-    </div>
-</div> -->
