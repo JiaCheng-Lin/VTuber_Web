@@ -1,6 +1,11 @@
+const lerp = Kalidokit.Vector.lerp;
 
 // yaw roll pitch
-let yaw=0, roll=0, pitch=0;
+let yaw=0, roll=0, pitch=0, eye_l=1, eye_r=1, pupil_x=0, pupil_y=0, mouth_y=0;
+
+// for smoothing 
+let pre_yaw=0, pre_roll=0, pre_pitch=0, pre_eye_l=1, pre_eye_r=1, pre_pupil_x=0, pre_pupil_y=0, pre_mouth_y=0;
+
 
 // start camera using mediapipe camera utils
 const startCamera = () => {
@@ -54,21 +59,54 @@ const animateLive2DModel = points => {
       runtime: "mediapipe",
       video: videoElement
     });
-    // console.log(riggedFace.head.degrees)
-    roll = riggedFace.head.degrees.z
-    yaw = riggedFace.head.degrees.y
-    pitch = riggedFace.head.degrees.x
+
+    // console.log(riggedFace)
+    roll = riggedFace.head.degrees.z;
+    yaw = riggedFace.head.degrees.y;
+    pitch = riggedFace.head.degrees.x;
+    eye_l = riggedFace.eye.l; 
+    eye_r = riggedFace.eye.r; 
+    pupil_x = riggedFace.pupil.x;
+    pupil_y = riggedFace.pupil.y;
+    mouth_y = riggedFace.mouth.y;
+
+    // smooth value
+    if(pre_roll!=0&&pre_yaw!=0&&pre_pitch!=0) { // not the first time
+      roll = lerp(pre_roll, roll, .4); 
+      yaw = lerp(pre_yaw, yaw, .4); 
+      pitch = lerp(pre_pitch, pitch, .4); 
+      eye_l = lerp(pre_eye_l, eye_l, .4);
+      eye_r = lerp(pre_eye_r, eye_r, .4);
+      pupil_x = lerp(pre_pupil_x, pupil_x, .4);
+      pupil_y = lerp(pre_pupil_y, pupil_y, .4); 
+      mouth_y = lerp(pre_mouth_y, mouth_y, .4); 
+    }
+    pre_roll = roll;
+    pre_yaw = yaw;
+    pre_pitch = pitch;
+    pre_eye_l = eye_l; 
+    pre_eye_r = eye_r ; 
+    pre_pupil_x = pupil_x;
+    pre_pupil_y = pupil_y;
+    pre_mouth_y = mouth_y;
+
+    // console.log(roll, yaw, pitch)
+    // console.log(pupil_x, pupil_y)
+
+    // // no wink, more natural 
+    if(eye_l>0.4&&eye_r>0.4) {
+      eye_l=1;
+      eye_r=1;
+    }
+    else {
+      eye_l=0;
+      eye_r=0;
+    }
   }
 };
 
 function getData() {
-  /*
-  array = some file
-  this file only contain this
-  {id:1,name:'Alpha'},
-  {id:2,name:'Beta'}
-  */
-  var data = [roll, pitch, yaw];
+  var data = [roll, pitch, yaw, eye_l, eye_r, pupil_x, pupil_y, mouth_y];
   // console.log("roll, pitch, yaw: ",data);
   return data;
 }
@@ -79,8 +117,8 @@ const faceMesh = new FaceMesh({locateFile: (file) => {
 faceMesh.setOptions({
   maxNumFaces: 1,
   refineLandmarks: true,
-  minDetectionConfidence: 0.5,
-  minTrackingConfidence: 0.5
+  minDetectionConfidence: 0.6,
+  minTrackingConfidence: 0.6
 });
 faceMesh.onResults(onResults);
 
@@ -88,7 +126,7 @@ const camera = new Camera(videoElement, {
   onFrame: async () => {
     await faceMesh.send({image: videoElement});
   },
-  width: 1280,
-  height: 720
+  width: 640,
+  height: 480
 });
 camera.start();
