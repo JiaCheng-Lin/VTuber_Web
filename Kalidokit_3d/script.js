@@ -7,11 +7,7 @@ const lerp = Kalidokit.Vector.lerp;
 // let currentVrm;
 
 // yaw roll pitch
-let yaw=0, roll=0, pitch=0, eye_l=1, eye_r=1, pupil_x=0, pupil_y=0, mouth_y=0;
-
-// for smoothing 
-let pre_yaw=0, pre_roll=0, pre_pitch=0, pre_eye_l=1, pre_eye_r=1, pre_pupil_x=0, pre_pupil_y=0, pre_mouth_y=0;
-
+let yaw=0, roll=0, pitch=0;
 
 // // renderer
 // const renderer = new THREE.WebGLRenderer({alpha:true});
@@ -192,54 +188,16 @@ const animateVRM = (results) => {
     riggedFace = Kalidokit.Face.solve(faceLandmarks, {
       runtime:"mediapipe",
       video:videoElement,
-      smoothBlink: true, // smooth left and right eye blink delays
-      blinkSettings: [0.25, 0.5], // adjust upper and lower bound blink sensitivity
+      smoothBlink: false, // smooth left and right eye blink delays
+      blinkSettings: [0.25, 0.75], // adjust upper and lower bound blink sensitivity
     });
     // console.log("riggedFace", riggedFace.head.degrees)
 
-    roll = riggedFace.head.degrees.z;
-    yaw = riggedFace.head.degrees.y;
-    pitch = riggedFace.head.degrees.x;
-    eye_l = riggedFace.eye.l; 
-    eye_r = riggedFace.eye.r; 
-    pupil_x = riggedFace.pupil.x;
-    pupil_y = riggedFace.pupil.y;
-    mouth_y = riggedFace.mouth.y;
+    roll = riggedFace.head.degrees.z
+    yaw = riggedFace.head.degrees.y
+    pitch = riggedFace.head.degrees.x
 
-    // smooth value
-    if(pre_roll!=0&&pre_yaw!=0&&pre_pitch!=0) { // not the first time
-      roll = lerp(pre_roll, roll, .4); 
-      yaw = lerp(pre_yaw, yaw, .4); 
-      pitch = lerp(pre_pitch, pitch, .4); 
-      eye_l = lerp(pre_eye_l, eye_l, .4);
-      eye_r = lerp(pre_eye_r, eye_r, .4);
-      pupil_x = lerp(pre_pupil_x, pupil_x, .4);
-      pupil_y = lerp(pre_pupil_y, pupil_y, .4); 
-      // console.log(pupil_y, pre_pupil_y, riggedFace.pupil.y);
-      mouth_y = lerp(pre_mouth_y, mouth_y, .4); 
-    }
-    pre_roll = roll;
-    pre_yaw = yaw;
-    pre_pitch = pitch;
-    pre_eye_l = eye_l; 
-    pre_eye_r = eye_r ; 
-    pre_pupil_x = pupil_x;
-    pre_pupil_y = pupil_y;
-    pre_mouth_y = mouth_y;
-
-
-    // // no wink, more natural 
-    if(eye_l>0.4&&eye_r>0.4) {
-      eye_l=1;
-      eye_r=1;
-    }
-    else {
-      eye_l=0;
-      eye_r=0;
-    }
-    
-    
-    // console.log("riggedFace", riggedFace);
+    console.log("riggedFace", riggedFace)
   //  rigFace(riggedFace)
   }
 
@@ -337,7 +295,7 @@ function getData() {
   {id:1,name:'Alpha'},
   {id:2,name:'Beta'}
   */
-  var data = [roll, pitch, yaw, eye_l, eye_r, pupil_x, pupil_y, mouth_y];
+  var data = [roll, pitch, yaw];
   // console.log("roll, pitch, yaw: ",data);
   return data;
 }
