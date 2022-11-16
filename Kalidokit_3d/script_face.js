@@ -1,3 +1,4 @@
+const lerp = Kalidokit.Vector.lerp;
 
 // yaw roll pitch
 let yaw=0, roll=0, pitch=0, eye_l=1, eye_r=1, pupil_x=0, pupil_y=0, mouth_y=0;
@@ -58,6 +59,7 @@ const animateLive2DModel = points => {
       runtime: "mediapipe",
       video: videoElement
     });
+
     // console.log(riggedFace)
     roll = riggedFace.head.degrees.z;
     yaw = riggedFace.head.degrees.y;
