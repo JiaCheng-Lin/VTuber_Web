@@ -90,6 +90,8 @@ const animateLive2DModel = points => {
     pre_pupil_y = pupil_y;
     pre_mouth_y = mouth_y;
 
+    // console.log(roll, yaw, pitch)
+    // console.log(pupil_x, pupil_y)
 
     // // no wink, more natural 
     if(eye_l>0.4&&eye_r>0.4) {

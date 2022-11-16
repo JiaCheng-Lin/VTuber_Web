@@ -215,7 +215,7 @@ const animateVRM = (results) => {
       eye_r = lerp(pre_eye_r, eye_r, .4);
       pupil_x = lerp(pre_pupil_x, pupil_x, .4);
       pupil_y = lerp(pre_pupil_y, pupil_y, .4); 
-      console.log(pupil_y, pre_pupil_y, riggedFace.pupil.y);
+      // console.log(pupil_y, pre_pupil_y, riggedFace.pupil.y);
       mouth_y = lerp(pre_mouth_y, mouth_y, .4); 
     }
     pre_roll = roll;
