@@ -202,8 +202,15 @@ const animateVRM = (results) => {
     pupil_y = riggedFace.pupil.y;
     mouth_y = riggedFace.mouth.y;
 
-
-    console.log("riggedFace", riggedFace);
+    if(eye_l<0.4 || eye_r<0.4){
+      eye_l=0;
+      eye_r=0;
+    }
+    if(eye_l>0.6&&eye_r>0.6) {
+      eye_l=1;
+      eye_r=1;
+    }
+    // console.log("riggedFace", riggedFace);
   //  rigFace(riggedFace)
   }
 

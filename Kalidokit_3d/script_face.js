@@ -1,6 +1,6 @@
 
 // yaw roll pitch
-let yaw=0, roll=0, pitch=0;
+let yaw=0, roll=0, pitch=0, eye_l=1, eye_r=1, pupil_x=0, pupil_y=0, mouth_y=0;
 
 // start camera using mediapipe camera utils
 const startCamera = () => {
@@ -54,21 +54,31 @@ const animateLive2DModel = points => {
       runtime: "mediapipe",
       video: videoElement
     });
-    // console.log(riggedFace.head.degrees)
-    roll = riggedFace.head.degrees.z
-    yaw = riggedFace.head.degrees.y
-    pitch = riggedFace.head.degrees.x
+    // console.log(riggedFace)
+    roll = riggedFace.head.degrees.z;
+    yaw = riggedFace.head.degrees.y;
+    pitch = riggedFace.head.degrees.x;
+    eye_l = riggedFace.eye.l; 
+    eye_r = riggedFace.eye.r; 
+    pupil_x = riggedFace.pupil.x;
+    pupil_y = riggedFace.pupil.y;
+    mouth_y = riggedFace.mouth.y;
+
+
+    // no wink, more natural 
+    if(eye_l<0.4 || eye_r<0.4){
+      eye_l=0;
+      eye_r=0;
+    }
+    if(eye_l>0.6&&eye_r>0.6) {
+      eye_l=1;
+      eye_r=1;
+    }
   }
 };
 
 function getData() {
-  /*
-  array = some file
-  this file only contain this
-  {id:1,name:'Alpha'},
-  {id:2,name:'Beta'}
-  */
-  var data = [roll, pitch, yaw];
+  var data = [roll, pitch, yaw, eye_l, eye_r, pupil_x, pupil_y, mouth_y];
   // console.log("roll, pitch, yaw: ",data);
   return data;
 }
@@ -79,8 +89,8 @@ const faceMesh = new FaceMesh({locateFile: (file) => {
 faceMesh.setOptions({
   maxNumFaces: 1,
   refineLandmarks: true,
-  minDetectionConfidence: 0.5,
-  minTrackingConfidence: 0.5
+  minDetectionConfidence: 0.6,
+  minTrackingConfidence: 0.6
 });
 faceMesh.onResults(onResults);
 
