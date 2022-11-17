@@ -90,7 +90,7 @@ const animateLive2DModel = points => {
     pre_pupil_y = pupil_y;
     pre_mouth_y = mouth_y;
 
-    // console.log(roll, yaw, pitch)
+    console.log(roll, yaw, pitch)
     // console.log(pupil_x, pupil_y)
 
     // // no wink, more natural 
@@ -115,7 +115,7 @@ const faceMesh = new FaceMesh({locateFile: (file) => {
   return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
 }});
 faceMesh.setOptions({
-  maxNumFaces: 1,
+  maxNumFaces: 5,
   refineLandmarks: true,
   minDetectionConfidence: 0.6,
   minTrackingConfidence: 0.6

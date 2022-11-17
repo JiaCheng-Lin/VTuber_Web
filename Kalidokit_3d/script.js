@@ -180,9 +180,9 @@ const animateVRM = (results) => {
 
   const faceLandmarks = results.faceLandmarks;
   // Pose 3D Landmarks are with respect to Hip distance in meters
-  // const pose3DLandmarks = results.ea;
+  const pose3DLandmarks = results.ea;
   // // Pose 2D landmarks are with respect to videoWidth and videoHeight
-  // const pose2DLandmarks = results.poseLandmarks;
+  const pose2DLandmarks = results.poseLandmarks;
   // // Be careful, hand landmarks may be reversed
   // const leftHandLandmarks = results.rightHandLandmarks;
   // const rightHandLandmarks = results.leftHandLandmarks;
@@ -245,11 +245,16 @@ const animateVRM = (results) => {
 
 
   // // Animate Pose
-  // if (pose2DLandmarks && pose3DLandmarks) {
-  //   riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
-  //     runtime: "mediapipe",
-  //     video:videoElement,
-  //   });
+  if (pose2DLandmarks && pose3DLandmarks) {
+    riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
+      runtime: "mediapipe",
+      video:videoElement,
+    });
+    // console.log(riggedPose.Hips.rotation)
+    body_roll = riggedPose.Hips.rotation.z;
+    body_yaw = riggedPose.Hips.rotation.y;
+    body_pitch = riggedPose.Hips.rotation.x;
+    console.log(body_roll, body_yaw, body_pitch)
   //   rigRotation("Hips", riggedPose.Hips.rotation, 0.7);
   //   rigPosition(
   //     "Hips",
@@ -327,7 +332,7 @@ const animateVRM = (results) => {
   //   rigRotation("RightLittleProximal", riggedRightHand.RightLittleProximal);
   //   rigRotation("RightLittleIntermediate", riggedRightHand.RightLittleIntermediate);
   //   rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
-  // }
+  }
 };
 
 function getData() {
@@ -383,14 +388,14 @@ const drawResults = (results) => {
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, guideCanvas.width, guideCanvas.height);
   // Use `Mediapipe` drawing functions
-  // drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
-  //     color: "#00cff7",
-  //     lineWidth: 4
-  //   });
-    // drawLandmarks(canvasCtx, results.poseLandmarks, {
-    //   color: "#ff0364",
-    //   lineWidth: 2
-    // });
+  drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
+      color: "#00cff7",
+      lineWidth: 4
+    });
+    drawLandmarks(canvasCtx, results.poseLandmarks, {
+      color: "#ff0364",
+      lineWidth: 2
+    });
     
       
     drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
